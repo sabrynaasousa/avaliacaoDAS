@@ -12,8 +12,6 @@ public class Acesso {
 	public int horaSaida, 
 			   minutosSaida;
 	
-
-
 	public Acesso() {}
 
 	
@@ -25,31 +23,36 @@ public class Acesso {
 		this.minutosEntrada = minutosEntrada;
 	}
 	
+	public int calculaQuantidadeHoras(int horasS, int horasE, int minutosS, int minutosE){
+		final int quantidadeHorasInicial = horaSaida - horaEntrada;
+
+		if (horaSaida > horaEntrada && minutosSaida < minutosEntrada){
+			final int quantidadeHorasI = quantidadeHorasInicial - 1;
+			return quantidadeHorasI;
+		}
+		else{
+			return quantidadeHorasInicial;
+		}		
+	}
+	
+	public int calculaQuantidadeMinutos(int horasS, int horasE, int minutosS, int minutosE){
+		final int quantidadeMinutosInicial = minutosSaida - minutosEntrada;
+
+		if (horaSaida > horaEntrada && minutosSaida < minutosEntrada){
+			final int quantidadeMinutosI = minutosSaida + (60 - minutosEntrada);
+			return quantidadeMinutosI;
+		}
+		else{
+			return quantidadeMinutosInicial;
+		}	
+	}
 	
 	public float calcularValor() { 
-		int quantidadeHoras = horaSaida - horaEntrada; 
-		int quantidadeMinutos; 
-		
-		if (horaSaida == horaEntrada)
-			quantidadeMinutos = minutosSaida - minutosEntrada;
-		else if (horaSaida > horaEntrada && minutosEntrada == minutosSaida){
-			quantidadeMinutos = 0;
-			quantidadeHoras = horaSaida - horaEntrada;
-		}
-		else if (horaSaida > horaEntrada && minutosEntrada > minutosSaida) 
-			quantidadeMinutos = minutosSaida - minutosEntrada;
-		else if (horaSaida > horaEntrada && minutosSaida < minutosEntrada){
-			quantidadeMinutos = minutosSaida + (60 - minutosEntrada);
-			quantidadeHoras = horaSaida - horaEntrada - 1;
-		}
-		else {
-			quantidadeHoras = 0;
-			quantidadeMinutos = 0;
-		}
-		
 		float valorTotal = 0; 
+		int quantidadeHoras = calculaQuantidadeHoras(horaSaida, horaEntrada, minutosSaida, minutosEntrada);
 		valorTotal += quantidadeHoras * VALOR_HORA;
-		valorTotal += Math.ceil(quantidadeMinutos / 15.0) * VALOR_FRACAO;		
+		int quantidadeMinutos = calculaQuantidadeMinutos(horaSaida, horaEntrada, minutosSaida, minutosEntrada);
+		valorTotal += Math.ceil(quantidadeMinutos/ 15.0) * VALOR_FRACAO;		
 		
 		if (quantidadeHoras >=9)
 			return VALOR_DIARIA;
